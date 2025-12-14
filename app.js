@@ -16,11 +16,17 @@ const orderRouter = require("./router/orderRouter");
 const reviewRouter = require("./router/reviewRouter");
 const viewRouter = require("./router/viewRouter");
 const bookingRouter = require("./router/bookingRouter");
+const bookingController = require("./controllers/bookingControllers");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorControllers");
 
 const app = express();
 app.set("trust proxy", 1);
+app.post(
+  "/webhook-checkout",
+  express.raw({ type: "application/json" }),
+  bookingController.webhookCheckout
+);
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -80,6 +86,7 @@ const limiter = rateLimit({
   message: "to Many request from same IP try again later after One hour",
 });
 app.use("/api", limiter);
+
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 // Data sanitization against NoSQL query injection {"$gt": ""})

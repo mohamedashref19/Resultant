@@ -19,3 +19,17 @@ export const bookMeal = async (mealId) => {
     showAlert("error", err);
   }
 };
+export const bookCart = async (cart) => {
+  try {
+    const session = await axios.post("/api/v1/bookings/checkout-cart", {
+      cart,
+    });
+
+    await stripe.redirectToCheckout({
+      sessionId: session.data.session.id,
+    });
+  } catch (err) {
+    console.log(err);
+    showAlert("error", err.response.data.message);
+  }
+};

@@ -13,12 +13,13 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   }
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
-    success_url: `${req.protocol}://${req.get("host")}/?meal=${
-      req.params.mealId
-    }&user=${req.user.id}&price=${meal.price}`,
-    cancel_url: `${req.protocol}://${req.get("host")}/meal/${meal.slug}`,
+    success_url: `${req.protocol}://${req.get(
+      "host"
+    )}/my-bookings?alert=booking`,
+    cancel_url: `${req.protocol}://${req.get("host")}/cart`,
     customer_email: req.user.email,
     client_reference_id: req.params.mealId,
+    metadata: { type: "single", userId: req.user.id, price: meal.price },
     mode: "payment",
     line_items: [
       {
@@ -28,13 +29,8 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
           product_data: {
             name: `${meal.name} Meal`,
             description: meal.summary,
-            // images: [
-            //   `${req.protocol}://${req.get("host")}/img/meals/${
-            //     meal.imageCover
-            //   }`,
-            // ],
             images: [
-              "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+              `https://restaurant-muddy-shadow-3798.fly.dev/img/meals/${meal.imageCover}`,
             ],
           },
         },
@@ -48,30 +44,84 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  const { meal, user, price } = req.query;
-  if (!meal || !user || !price) return next();
-  await Booking.create({
-    meal,
-    user,
-    price,
+exports.getCartCheckoutSession = catchAsync(async (req, res, next) => {
+  const cart = req.body.cart;
+  const lineItems = cart.map((item) => ({
+    price_data: {
+      currency: "usd",
+      unit_amount: item.price * 100,
+      product_data: {
+        name: `${item.name} Meal`,
+        description: item.summary,
+        images: [
+          `https://restaurant-muddy-shadow-3798.fly.dev/img/meals/${item.image}`,
+        ],
+      },
+    },
+    quantity: 1,
+  }));
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    success_url: `${req.protocol}://${req.get(
+      "host"
+    )}/my-bookings?alert=booking`,
+    cancel_url: `${req.protocol}://${req.get("host")}/cart`,
+    customer_email: req.user.email,
+    client_reference_id: req.user.id,
+    metadata: { type: "cart" },
+    mode: "payment",
+    line_items: lineItems,
   });
 
-  const userDoc = await User.findById(user);
-  const mealDoc = await Meal.findById(meal);
-  const myBookingsUrl = `${req.protocol}://${req.get("host")}/my-booking`;
+  res.status(200).json({ status: "success", session });
+});
+
+const createBookingCheckout = async (session) => {
+  const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+  const userId =
+    session.metadata.type === "cart"
+      ? session.client_reference_id
+      : session.metadata.userId;
+  for (const item of lineItems.data) {
+    const mealName = item.description.replace(" Meal", "").trim();
+    const meal = await Meal.findOne({ name: mealName });
+    if (meal) {
+      await Booking.create({
+        meal: meal._id,
+        user: userId,
+        price: item.amount_total / 100,
+      });
+    }
+  }
+
   try {
+    const userDoc = await User.findById(userId);
+    const myBookingsUrl = `https://restaurant-muddy-shadow-3798.fly.dev/my-bookings`;
     await new Email(userDoc, myBookingsUrl).sendBookingConfirmation(
-      mealDoc.name,
-      price
+      "your Cart Items",
+      session.amount_total / 100
     );
   } catch (err) {
     console.log("Error sending email:", err);
   }
-
-  res.redirect(req.originalUrl.split("?")[0]);
+};
+exports.webhookCheckout = catchAsync(async (req, res, next) => {
+  const signature = req.headers["stripe-signature"];
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    return res.status(400).send(`Webhook error: ${err.message}`);
+  }
+  if (event.type === "checkout.session.completed") {
+    createBookingCheckout(event.data.object);
+  }
+  res.status(200).json({ received: true });
 });
-
 exports.updateBooking = catchAsync(async (req, res, next) => {
   const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

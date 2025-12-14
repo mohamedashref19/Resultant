@@ -1054,3 +1054,76 @@ body {
   color: #c0392b;
   background-color: #ffeaa7;
 }
+
+/* تنسيق حاوية السلة */
+.cart-container {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+}
+
+.cart-container h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #55c57a; /* نفس لون اللوجو الأخضر */
+}
+
+/* تنسيق العنصر الواحد داخل السلة */
+.cart-item {
+  display: flex; /* وضع الصورة بجانب النص */
+  align-items: center; /* محاذاة عمودية في المنتصف */
+  background-color: #f7f7f7;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
+}
+
+.cart-item:hover {
+  transform: translateY(-3px); /* حركة بسيطة عند الوقوف عليها */
+}
+
+/* تنسيق الصورة */
+.cart-img {
+  width: 100px; /* عرض ثابت صغير */
+  height: 100px; /* طول ثابت صغير */
+  border-radius: 50%; /* جعل الصورة دائرية */
+  object-fit: cover; /* لضمان عدم مط الصورة */
+  margin-right: 2rem; /* مسافة بين الصورة والنص */
+  border: 3px solid #fff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+/* تفاصيل النص */
+.cart-details h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #444;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.cart-details p {
+  font-size: 1.4rem;
+  color: #777;
+}
+
+/* قسم المجموع وزر الدفع */
+.cart-summary {
+  margin-top: 4rem;
+  text-align: right;
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+}
+
+.cart-summary p {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+#cart-total {
+  color: #55c57a;
+}

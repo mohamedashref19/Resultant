@@ -9,9 +9,12 @@ import {
 } from "./login";
 import { updateSettings } from "./updateSetings";
 import { createReview } from "./reviews";
-import { bookMeal } from "./stripe";
 import { initAdminTabs, deleteData, updateOrderStatus } from "./admin";
 import { saveMeal } from "./mangeMeal";
+import { showAlert } from "./alert";
+import { addToCart, updateCartBadge, getCart } from "./cart";
+import { bookCart, bookMeal } from "./stripe";
+updateCartBadge();
 const loginForm = document.querySelector(".form--login");
 const logOutBtn = document.querySelector(".nav__el--logout");
 const signupForm = document.querySelector(".form--signup");
@@ -237,4 +240,77 @@ if (statusSelects) {
       e.target.className = `order-status status-${status}`;
     });
   });
+}
+// const alertMessage = document.querySelector("body").dataset.alert;
+// if (alertMessage) {
+//   showAlert("success", alertMessage, 20);
+// }
+
+const addToCartBtns = document.querySelectorAll(".btn-add-cart");
+
+if (addToCartBtns) {
+  addToCartBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const { mealId, mealName, mealPrice, mealImage } = e.target.dataset;
+      addToCart({
+        id: mealId,
+        name: mealName,
+        price: mealPrice,
+        image: mealImage,
+      });
+    });
+  });
+}
+const cartContainer = document.querySelector(".cart-items");
+
+if (cartContainer) {
+  const cart = getCart();
+  const totalEl = document.getElementById("cart-total");
+  let total = 0;
+
+  if (cart.length === 0) {
+    cartContainer.innerHTML = "<p>Your cart is empty!</p>";
+  } else {
+    cart.forEach((item) => {
+      total += parseFloat(item.price);
+      const html = `
+        <div class="cart-item">
+          <img src="/img/meals/${item.image}" alt="${item.name}" class="cart-img" />
+          <div class="cart-details">
+            <h3>${item.name}</h3>
+            <p>$${item.price}</p>
+          </div>
+        </div>
+      `;
+      cartContainer.insertAdjacentHTML("beforeend", html);
+    });
+    if (totalEl) totalEl.textContent = total;
+  }
+
+  const checkoutBtn = document.getElementById("checkout-btn");
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", () => {
+      if (cart.length > 0) {
+        bookCart(cart);
+      } else {
+        alert("Your cart is empty!");
+      }
+    });
+  }
+}
+
+const alertMessage = document.querySelector("body").dataset.alert;
+if (alertMessage) {
+  showAlert("success", alertMessage, 15);
+
+  if (alertMessage.includes("successful") || alertMessage.includes("success")) {
+    localStorage.removeItem("cart");
+    updateCartBadge();
+
+    const cartContainer = document.querySelector(".cart-items");
+    if (cartContainer) cartContainer.innerHTML = "<p>Your cart is empty!</p>";
+    const totalEl = document.getElementById("cart-total");
+    if (totalEl) totalEl.textContent = "0";
+  }
 }

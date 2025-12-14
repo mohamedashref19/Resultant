@@ -21,7 +21,7 @@ block content
       .meal-cta
         p.meal-price $#{meal.price}
         if user 
-          button.btn.btn--primary#book-meal(data-meal-id=`${meal.id}`) Add to Cart
+          button.btn.btn--primary.btn-add-cart(data-meal-id=`${meal.id}`,data-meal-name=`${meal.name}`,data-meal-price=`${meal.price}`,data-meal-image=`${meal.imageCover}`) Add to Cart
         else 
           a.btn.btn--primary(href='/login') Login to Buy  
   section.section-create-review

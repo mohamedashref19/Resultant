@@ -8,6 +8,11 @@ router.get(
   authControllers.proctect,
   bookingControllers.getCheckoutSession
 );
+router.post(
+  "/checkout-cart",
+  authControllers.proctect,
+  bookingControllers.getCartCheckoutSession
+);
 router.use(authControllers.proctect);
 router.use(authControllers.restrictTO("admin"));
 router.route("/").get(bookingControllers.getAllBookings);
