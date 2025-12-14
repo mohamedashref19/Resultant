@@ -58,7 +58,7 @@ exports.getCartCheckoutSession = catchAsync(async (req, res, next) => {
         ],
       },
     },
-    quantity: 1,
+    quantity: item.quantity,
   }));
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
@@ -82,23 +82,30 @@ const createBookingCheckout = async (session) => {
     session.metadata.type === "cart"
       ? session.client_reference_id
       : session.metadata.userId;
+
+  const orderedMeals = [];
+
   for (const item of lineItems.data) {
     const mealName = item.description.replace(" Meal", "").trim();
     const meal = await Meal.findOne({ name: mealName });
     if (meal) {
-      await Booking.create({
-        meal: meal._id,
-        user: userId,
-        price: item.amount_total / 100,
-      });
+      const quantity = item.quantity || 1;
+      orderedMeals.push(`${quantity}x ${item.description}`);
+      for (let i = 0; i < item.quantity; i++) {
+        await Booking.create({
+          meal: meal._id,
+          user: userId,
+          price: item.amount_total / quantity / 100,
+        });
+      }
     }
   }
-
+  const allMealsText = orderedMeals.join(" - ");
   try {
     const userDoc = await User.findById(userId);
     const myBookingsUrl = `https://restaurant-muddy-shadow-3798.fly.dev/my-bookings`;
     await new Email(userDoc, myBookingsUrl).sendBookingConfirmation(
-      "your Cart Items",
+      allMealsText,
       session.amount_total / 100
     );
   } catch (err) {

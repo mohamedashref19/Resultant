@@ -24,6 +24,9 @@ block content
             .card__header
               .card__picture
                 img.card__picture-img(src=`/img/meals/${meal.imageCover}`, alt=meal.name)
+              if meal.quantity
+                .card__quantity-badge
+                  span #{meal.quantity}x Ordered
             .card__details
               h3.card__title= meal.name
               .card__info

@@ -1,12 +1,19 @@
 export const addToCart = (meal) => {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  const existingMeal = cart.find((item) => item.id === meal.id);
-  if (existingMeal) return alert("This meal is already in your cart!");
+  const existingItemIndex = cart.findIndex(
+    (item) => String(item.id) === String(meal.id)
+  );
+  if (existingItemIndex > -1) {
+    cart[existingItemIndex].quantity += 1;
+    alert("Quantity updated! Now you have " + cart[existingItemIndex].quantity);
+  } else {
+    meal.quantity = 1;
+    cart.push(meal);
+    alert("Meal added to cart successfully!");
+  }
 
-  cart.push(meal);
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Meal added to cart successfully!");
   updateCartBadge();
 };
 
@@ -16,6 +23,7 @@ export const getCart = () => {
 
 export const updateCartBadge = () => {
   const cart = getCart();
+  const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
   const badge = document.getElementById("cart-badge");
-  if (badge) badge.textContent = cart.length;
+  if (badge) badge.textContent = totalQuantity;
 };

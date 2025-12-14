@@ -273,16 +273,20 @@ if (cartContainer) {
     cartContainer.innerHTML = "<p>Your cart is empty!</p>";
   } else {
     cart.forEach((item) => {
-      total += parseFloat(item.price);
+      const itemTotal = parseFloat(item.price) * item.quantity;
+      total += itemTotal;
       const html = `
-        <div class="cart-item">
-          <img src="/img/meals/${item.image}" alt="${item.name}" class="cart-img" />
-          <div class="cart-details">
-            <h3>${item.name}</h3>
-            <p>$${item.price}</p>
-          </div>
+      <div class="cart-item">
+        <img src="/img/meals/${item.image}" alt="${item.name}" class="cart-img" />
+        <div class="cart-details">
+          <h3>${item.name}</h3>
+          <p>
+            <span style="font-weight:bold; color:#55c57a;">${item.quantity}x</span> 
+            $${item.price} = <strong>$${itemTotal}</strong>
+          </p>
         </div>
-      `;
+      </div>
+    `;
       cartContainer.insertAdjacentHTML("beforeend", html);
     });
     if (totalEl) totalEl.textContent = total;
@@ -303,6 +307,7 @@ if (cartContainer) {
 const alertMessage = document.querySelector("body").dataset.alert;
 if (alertMessage) {
   showAlert("success", alertMessage, 15);
+  window.history.replaceState(null, "", window.location.pathname);
 
   if (alertMessage.includes("successful") || alertMessage.includes("success")) {
     localStorage.removeItem("cart");

@@ -83,13 +83,26 @@ exports.getResetPasswordForm = (req, res) => {
 
 exports.getMyMeal = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: req.user.id });
+  const mealIDs = bookings.map((el) => el.meal);
+  const bookingCounts = {};
 
-  const mealIds = bookings.map((el) => el.meal);
-  const meals = await Meal.find({ _id: { $in: mealIds } });
+  mealIDs.forEach((item) => {
+    const id = item._id ? item._id : item;
+    const idStr = id.toString();
+    bookingCounts[idStr] = (bookingCounts[idStr] || 0) + 1;
+  });
+  const uniqueMealIds = Object.keys(bookingCounts);
+  const meals = await Meal.find({ _id: { $in: uniqueMealIds } });
 
+  const mealsWithCount = meals.map((meal) => {
+    const mealObj = meal.toObject();
+    const idStr = mealObj._id.toString();
+    mealObj.quantity = bookingCounts[idStr];
+    return mealObj;
+  });
   res.status(200).render("overview", {
     title: "My Bookings",
-    meals,
+    meals: mealsWithCount,
     isBookings: true,
   });
 });
