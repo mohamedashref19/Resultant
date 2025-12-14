@@ -1,0 +1,60 @@
+extends base
+include _reviewCard
+
+block content
+  section.section-header
+    img.header__hero-img(src=`/img/meals/${meal.imageCover}`, alt=meal.name)
+    .heading-box
+      h1.heading-primary
+        span= meal.name
+      .heading-box__group
+        .heading-box__detail
+          span= `${meal.category}`
+        .heading-box__detail
+          span= `⭐ ${meal.ratingsAverage} / 5`
+
+  section.section-description
+    .description-box
+      h2.heading-secondary= `About ${meal.name}`
+      p.description__text= meal.description
+      
+      .meal-cta
+        p.meal-price $#{meal.price}
+        if user 
+          button.btn.btn--primary#book-meal(data-meal-id=`${meal.id}`) Add to Cart
+        else 
+          a.btn.btn--primary(href='/login') Login to Buy  
+  section.section-create-review
+    .create-review-container
+      if user
+        h2.heading-secondary Write a Review
+        form.form.form--review(data-meal-id=`${meal.id}`)
+          .form__group
+            .rate
+              input#star5(type="radio" name="rate" value="5")
+              label(for="star5" title="text") 5 stars
+              input#star4(type="radio" name="rate" value="4")
+              label(for="star4" title="text") 4 stars
+              input#star3(type="radio" name="rate" value="3")
+              label(for="star3" title="text") 3 stars
+              input#star2(type="radio" name="rate" value="2")
+              label(for="star2" title="text") 2 stars
+              input#star1(type="radio" name="rate" value="1")
+              label(for="star1" title="text") 1 star
+          
+          .form__group
+            label.form__label(for='review') Your Review
+            textarea#review.form__input(name='review', rows='4', placeholder='Tell us what you think...', required)
+          
+          .form__group
+            button.btn.btn--green Submit Review
+      else
+        .login-prompt
+          p Please <a href="/login" style="color: #ff6b6b;">login</a> to write a review!      
+  section.section-reviews
+    .reviews
+      if meal.reviews.length > 0
+        each review in meal.reviews
+          +reviewCard(review)
+      else
+        p(style="text-align: center; font-size: 2rem; color: white;") No reviews yet. Be the first to review!     

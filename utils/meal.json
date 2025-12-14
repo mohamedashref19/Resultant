@@ -1,0 +1,201 @@
+[
+  {
+    "name": "Spicy Lamb Tagine with Couscous",
+    "price": 180,
+    "Discountprice": 160,
+    "description": "A traditional Moroccan stew of tender lamb, apricots, and spices, served over fluffy couscous.",
+    "category": "Main Course",
+    "imageCover": "meal-1.jpg",
+    "ratingsAverage": 4.8,
+    "ratingsQuantity": 19
+  },
+  {
+    "name": "Classic Margherita Pizza",
+    "price": 110,
+    "description": "Simple and delicious, featuring San Marzano tomato sauce, fresh mozzarella, and basil.",
+    "category": "Pizza",
+    "imageCover": "pizza-1.jpg",
+    "ratingsAverage": 4.8,
+    "ratingsQuantity": 45
+  },
+  {
+    "name": "Double Cheeseburger",
+    "price": 150,
+    "description": "Two beef patties, cheddar cheese, lettuce, tomato, and special sauce.",
+    "category": "Burger",
+    "imageCover": "burger-1.jpg",
+    "ratingsAverage": 4.7,
+    "ratingsQuantity": 60
+  },
+  {
+    "name": "Grilled Salmon",
+    "price": 240,
+    "description": "Fresh Atlantic salmon grilled to perfection with a light lemon butter sauce.",
+    "category": "Seafood",
+    "imageCover": "seafood-1.jpg",
+    "ratingsAverage": 4.9,
+    "ratingsQuantity": 15
+  },
+  {
+    "name": "Chocolate Lava Cake",
+    "price": 75,
+    "description": "Warm, molten chocolate cake with a creamy vanilla ice cream scoop.",
+    "category": "Dessert",
+    "imageCover": "dessert-1.jpg",
+    "ratingsAverage": 5.0,
+    "ratingsQuantity": 100
+  },
+  {
+    "name": "Caesar Salad",
+    "price": 90,
+    "description": "Crisp romaine lettuce, parmesan cheese, croutons, and Caesar dressing.",
+    "category": "Salad",
+    "imageCover": "salad-1.jpg",
+    "ratingsAverage": 4.5,
+    "ratingsQuantity": 30
+  },
+  {
+    "name": "Pepperoni Pizza",
+    "price": 130,
+    "description": "Loaded with pepperoni slices and extra mozzarella cheese.",
+    "category": "Pizza",
+    "imageCover": "pizza-2.jpg",
+    "ratingsAverage": 4.6,
+    "ratingsQuantity": 55
+  },
+  {
+    "name": "Chicken Alfredo Pasta",
+    "price": 160,
+    "description": "Fettuccine pasta tossed in a rich and creamy parmesan sauce with grilled chicken.",
+    "category": "Pasta",
+    "imageCover": "pasta-1.jpg",
+    "ratingsAverage": 4.7,
+    "ratingsQuantity": 40
+  },
+  {
+    "name": "Mushroom Swiss Burger",
+    "price": 170,
+    "description": "Beef patty topped with sautéed mushrooms and melted Swiss cheese.",
+    "category": "Burger",
+    "imageCover": "burger-2.jpg",
+    "ratingsAverage": 4.4,
+    "ratingsQuantity": 25
+  },
+  {
+    "name": "Sushi Platter",
+    "price": 300,
+    "description": "Assortment of fresh nigiri and maki rolls.",
+    "category": "Seafood",
+    "imageCover": "seafood-2.jpg",
+    "ratingsAverage": 4.8,
+    "ratingsQuantity": 20
+  },
+  {
+    "name": "Tiramisu",
+    "price": 85,
+    "description": "Classic Italian dessert made with coffee-soaked ladyfingers and mascarpone cheese.",
+    "category": "Dessert",
+    "imageCover": "dessert-2.jpg",
+    "ratingsAverage": 4.9,
+    "ratingsQuantity": 70
+  },
+  {
+    "name": "Greek Salad",
+    "price": 95,
+    "description": "Fresh cucumbers, tomatoes, olives, red onion, and feta cheese.",
+    "category": "Salad",
+    "imageCover": "salad-2.jpg",
+    "ratingsAverage": 4.3,
+    "ratingsQuantity": 18
+  },
+  {
+    "name": "BBQ Chicken Pizza",
+    "price": 140,
+    "description": "Grilled chicken, red onions, cilantro, and tangy BBQ sauce.",
+    "category": "Pizza",
+    "imageCover": "pizza-3.jpg",
+    "ratingsAverage": 4.6,
+    "ratingsQuantity": 35
+  },
+  {
+    "name": "Spaghetti Bolognese",
+    "price": 150,
+    "description": "Classic meat sauce served over al dente spaghetti.",
+    "category": "Pasta",
+    "imageCover": "pasta-2.jpg",
+    "ratingsAverage": 4.5,
+    "ratingsQuantity": 50
+  },
+  {
+    "name": "Crispy Chicken Burger",
+    "price": 145,
+    "description": "Fried chicken breast with coleslaw and pickles.",
+    "category": "Burger",
+    "imageCover": "burger-3.jpg",
+    "ratingsAverage": 4.6,
+    "ratingsQuantity": 42
+  },
+  {
+    "name": "Grilled Shrimp Skewers",
+    "price": 220,
+    "description": "Marinated shrimp grilled with bell peppers and onions.",
+    "category": "Seafood",
+    "imageCover": "seafood-3.jpg",
+    "ratingsAverage": 4.7,
+    "ratingsQuantity": 28
+  },
+  {
+    "name": "Cheesecake",
+    "price": 80,
+    "description": "Creamy New York style cheesecake with a graham cracker crust.",
+    "category": "Dessert",
+    "imageCover": "dessert-3.jpg",
+    "ratingsAverage": 4.8,
+    "ratingsQuantity": 65
+  },
+  {
+    "name": "Mojito",
+    "price": 50,
+    "description": "Refreshing lime and mint mocktail.",
+    "category": "Drinks",
+    "imageCover": "drink-1.jpg",
+    "ratingsAverage": 4.2,
+    "ratingsQuantity": 15
+  },
+  {
+    "name": "Iced Latte",
+    "price": 55,
+    "description": "Espresso with cold milk and ice.",
+    "category": "Drinks",
+    "imageCover": "drink-2.jpg",
+    "ratingsAverage": 4.5,
+    "ratingsQuantity": 40
+  },
+  {
+    "name": "Vegetarian Pizza",
+    "price": 120,
+    "description": "Loaded with bell peppers, onions, mushrooms, and olives.",
+    "category": "Pizza",
+    "imageCover": "pizza-4.jpg",
+    "ratingsAverage": 4.1,
+    "ratingsQuantity": 20
+  },
+  {
+    "name": "Penne Arrabbiata",
+    "price": 130,
+    "description": "Penne pasta in a spicy tomato sauce with garlic and chili.",
+    "category": "Pasta",
+    "imageCover": "pasta-3.jpg",
+    "ratingsAverage": 4.3,
+    "ratingsQuantity": 22
+  },
+  {
+    "name": "Lobster Bisque",
+    "price": 190,
+    "description": "Rich and creamy soup made with fresh lobster.",
+    "category": "Seafood",
+    "imageCover": "seafood-4.jpg",
+    "ratingsAverage": 4.9,
+    "ratingsQuantity": 12
+  }
+]

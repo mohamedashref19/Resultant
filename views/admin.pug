@@ -1,0 +1,103 @@
+extends base
+
+block content
+  main.main
+    .admin-container
+      .admin-sidebar
+        h2.admin-title ⚙️ Dashboard
+        ul.side-nav
+          li.side-nav__item.side-nav__item--active(data-target='section-meals') 🍔 Meals
+          li.side-nav__item(data-target='section-users') 👥 Users
+          li.side-nav__item(data-target='section-bookings') 📅 Bookings
+          li.side-nav__item(data-target='section-reviews') ⭐ Reviews
+
+      .admin-content
+        
+        section#section-meals.admin-section
+          .section-header.section-header--hero
+            h2 Manage Meals
+            a.btn.btn--small.btn--green(href='/create-meal') + Add New Meal
+          
+          table.admin-table
+            thead
+              tr
+                th Image
+                th Name
+                th Price
+                th Rating
+                th Actions
+            tbody
+              each meal in meals
+                tr
+                  td: img.table-img(src=`/img/meals/${meal.imageCover}`)
+                  td= meal.name
+                  td $#{meal.price}
+                  td= meal.ratingsAverage
+                  td
+                    button.btn-icon.btn-delete(data-id=meal.id, data-type='meals') 🗑️
+                    a.btn-icon.btn-edit(href=`/edit-meal/${meal.id}`) ✏️
+
+        //- SECTION: USERS
+        section#section-users.admin-section.hidden
+          h2 Manage Users
+          table.admin-table
+            thead
+              tr
+                th Name
+                th Email
+                th Role
+                th Actions
+            tbody
+              each user in users
+                tr
+                  td= user.name
+                  td= user.email
+                  td
+                    span(class=`badge badge--${user.role}`)= user.role
+                  td
+                    button.btn-icon.btn-delete(data-id=user.id, data-type='users') 🗑️
+
+        //- SECTION: BOOKINGS
+        section#section-bookings.admin-section.hidden
+          h2 Manage Bookings
+          table.admin-table
+            thead
+              tr
+                th User
+                th Meal
+                th Price
+                th Date
+            tbody
+              each booking in bookings
+                tr
+                  td= booking.user ? booking.user.name : 'UnKnown User'
+                  td= booking.meal ? booking.meal.name : 'UnKnown User'
+                  td $#{booking.price}
+                  td= booking.createdAt.toLocaleString('en-US', {day: 'numeric', month: 'short'})
+                  td
+                    select.order-status(data-id=booking.id, class=`status-${booking.status}`)
+                      each status in ['pending', 'cooking', 'delivering', 'delivered', 'cancelled']
+                        option(value=status, selected=booking.status === status)= status.charAt(0).toUpperCase() + status.slice(1)
+                  td
+                    button.btn-icon.btn-delete(data-id=booking.id, data-type='bookings') 🗑️      
+
+        //- SECTION: REVIEWS
+        section#section-reviews.admin-section.hidden
+          h2 Manage Reviews
+          table.admin-table
+            thead
+              tr
+                th User
+                th Meal
+                th Review
+                th Rating
+                th Actions
+            tbody
+              each review in reviews
+                tr
+                  td= review.user ? review.user.name : 'UnKnown User'
+                  td= review.meal ? review.meal.name : 'UnKnown User'
+                  td= review.review
+                  td= review.rating
+                  td
+                     button.btn-icon.btn-delete(data-id=review.id, data-type='reviews') 🗑️

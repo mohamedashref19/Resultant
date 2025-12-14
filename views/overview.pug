@@ -1,0 +1,36 @@
+extends base
+
+block content
+  if !isBookings && !isMenuPage
+    section.hero-banner
+      .hero-content
+        h1 Welcome to Our Restaurant
+        p Discover the best food in town, delivered to your doorstep.
+        a.btn.btn--primary(href='/menu') View Menu
+
+  main.main#menu
+    h1.heading-primary(style="text-align: center; margin-bottom: 2rem;")= title ? title : 'Our Delicious Menu'
+    
+    if meals.length === 0
+      .no-bookings(style="text-align: center; padding: 5rem 0;")
+        h2.heading-secondary(style="margin-bottom: 1.5rem;") You haven't booked any meals yet! 😢
+        p(style="font-size: 1.2rem; color: #777; margin-bottom: 3rem;") Looks like you haven't ordered anything. Check out our menu to find something delicious!
+        a.btn.btn--primary(href='/') Browse Menu Now
+    
+    else
+      .card-container
+        each meal in meals
+          .card
+            .card__header
+              .card__picture
+                img.card__picture-img(src=`/img/meals/${meal.imageCover}`, alt=meal.name)
+            .card__details
+              h3.card__title= meal.name
+              .card__info
+                span.card__category= meal.category
+                span.card__rating ⭐ #{meal.ratingsAverage} (#{meal.ratingsQuantity})
+              p.card__text= meal.description
+              
+              .card__footer-flex
+                span.card__price $#{meal.price}
+                a.btn.btn--small(href=`/meal/${meal.slug}`) Details

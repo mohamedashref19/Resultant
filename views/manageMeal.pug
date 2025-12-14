@@ -1,0 +1,38 @@
+extends base
+
+block content
+  main.main
+    .login-form
+      h2.heading-secondary.ma-bt-lg= meal ? `Edit ${meal.name}` : 'Create New Meal'
+      
+      //- نضع الـ ID في الفورم عشان الجافاسكريبت يعرف إحنا بنعدل مين
+      form.form.form--meal-data(data-id=meal ? meal.id : '')
+        
+        .form__group
+          label.form__label(for='name') Meal Name
+          input#name.form__input(type='text', value=meal ? meal.name : '', required)
+        
+        .form__group
+          label.form__label(for='price') Price
+          input#price.form__input(type='number', value=meal ? meal.price : '', required)
+
+        .form__group
+          label.form__label(for='description') Description
+          textarea#description.form__input(rows='3', required)= meal ? meal.description : ''
+
+        .form__group
+          label.form__label(for='category') Category
+          select#category.form__input(required)
+            - const categories = ['Pizza', 'Burger', 'Pasta', 'Seafood', 'Dessert', 'Drinks', 'Salad', 'Main Course']
+            each cat in categories
+              option(value=cat, selected=(meal && meal.category === cat))= cat
+
+        .form__group.form__photo-upload
+            if meal
+                img.form__user-photo(src=`/img/meals/${meal.imageCover}`, alt='Meal photo')
+            
+            input.form__upload(type='file', accept='image/*', id='photo', name='photo')
+            label(for='photo')= meal ? 'Change photo' : 'Upload photo'
+
+        .form__group
+          button.btn.btn--green= meal ? 'Save Changes' : 'Create Meal'
